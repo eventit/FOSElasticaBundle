@@ -29,7 +29,7 @@ class RepositoryManager implements RepositoryManagerInterface
     /** @var array */
     protected $repositories = [];
 
-    /** @var ManagerRegistry */
+    /** @var Registry */
     protected $managerRegistry;
 
     /**
@@ -38,10 +38,10 @@ class RepositoryManager implements RepositoryManagerInterface
     private $repositoryManager;
 
     /**
-     * @param ManagerRegistry            $managerRegistry
+     * @param Registry                   $managerRegistry
      * @param RepositoryManagerInterface $repositoryManager
      */
-    public function __construct(ManagerRegistry $managerRegistry, RepositoryManagerInterface $repositoryManager)
+    public function __construct(Registry $managerRegistry, RepositoryManagerInterface $repositoryManager)
     {
         $this->managerRegistry = $managerRegistry;
         $this->repositoryManager = $repositoryManager;

@@ -1,7 +1,7 @@
 <?php
 namespace FOS\ElasticaBundle\Doctrine;
 
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Doctrine\ODM\MongoDB\DocumentManager;
 use Doctrine\ORM\EntityManagerInterface;
 use FOS\ElasticaBundle\Persister\Event\Events;
@@ -44,7 +44,7 @@ class RegisterListenersService
         if (false == $options['debug_logging'] && $manager instanceof EntityManagerInterface) {
             $configuration = $manager->getConnection()->getConfiguration();
             $logger = $configuration->getSQLLogger();
-            
+
             $this->addListener($pager, Events::PRE_FETCH_OBJECTS, function() use ($configuration) {
                 $configuration->setSQLLogger(null);
             });

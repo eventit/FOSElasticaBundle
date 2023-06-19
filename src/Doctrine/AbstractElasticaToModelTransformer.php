@@ -3,7 +3,7 @@
 /*
  * This file is part of the FOSElasticaBundle package.
  *
- * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+ * (c) FriendsOfSymfony <https://friendsofsymfony.github.com/>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -26,16 +26,16 @@ abstract class AbstractElasticaToModelTransformer extends BaseTransformer
     /**
      * Manager registry.
      *
-     * @var ManagerRegistry
+     * @var Registry
      */
-    protected $registry = null;
+    protected $registry;
 
     /**
      * Class of the model to map to the elastica documents.
      *
      * @var string
      */
-    protected $objectClass = null;
+    protected $objectClass;
 
     /**
      * Optional parameters.
@@ -52,24 +52,18 @@ abstract class AbstractElasticaToModelTransformer extends BaseTransformer
 
     /**
      * Instantiates a new Mapper.
-     *
-     * @param ManagerRegistry $registry
-     * @param string          $objectClass
-     * @param array           $options
      */
-    public function __construct(ManagerRegistry $registry, $objectClass, array $options = [])
+    public function __construct(Registry $registry, string $objectClass, array $options = [])
     {
         $this->registry = $registry;
         $this->objectClass = $objectClass;
-        $this->options = array_merge($this->options, $options);
+        $this->options = \array_merge($this->options, $options);
     }
 
     /**
      * Returns the object class that is used for conversion.
-     *
-     * @return string
      */
-    public function getObjectClass()
+    public function getObjectClass(): string
     {
         return $this->objectClass;
     }
@@ -83,7 +77,7 @@ abstract class AbstractElasticaToModelTransformer extends BaseTransformer
      * @throws \RuntimeException
      *
      * @return array
-     **/
+     */
     public function transform(array $elasticaObjects)
     {
         $ids = $highlights = [];
@@ -113,18 +107,18 @@ abstract class AbstractElasticaToModelTransformer extends BaseTransformer
         }
 
         // sort objects in the order of ids
-        $idPos = array_flip($ids);
-        usort(
+        $idPos = \array_flip($ids);
+        \usort(
             $objects,
             function ($a, $b) use ($idPos, $identifier, $propertyAccessor) {
                 if ($this->options['hydrate']) {
                     return $idPos[(string) $propertyAccessor->getValue(
-                        $a,
-                        $identifier
-                    )] > $idPos[(string) $propertyAccessor->getValue($b, $identifier)];
+                            $a,
+                            $identifier
+                        )] <=> $idPos[(string) $propertyAccessor->getValue($b, $identifier)];
                 }
 
-                return $idPos[$a[$identifier]] > $idPos[$b[$identifier]];
+                return $idPos[$a[$identifier]] <=> $idPos[$b[$identifier]];
             }
         );
 
@@ -156,7 +150,7 @@ abstract class AbstractElasticaToModelTransformer extends BaseTransformer
     /**
      * {@inheritdoc}
      */
-    public function getIdentifierField()
+    public function getIdentifierField(): string
     {
         return $this->options['identifier'];
     }
@@ -169,5 +163,5 @@ abstract class AbstractElasticaToModelTransformer extends BaseTransformer
      *
      * @return array of objects or arrays
      */
-    abstract protected function findByIdentifiers(array $identifierValues, $hydrate);
+    abstract protected function findByIdentifiers(array $identifierValues, bool $hydrate);
 }

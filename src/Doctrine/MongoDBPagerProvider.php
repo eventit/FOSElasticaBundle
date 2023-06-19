@@ -25,7 +25,7 @@ final class MongoDBPagerProvider implements PagerProviderInterface
     private $objectClass;
 
     /**
-     * @var ManagerRegistry
+     * @var Registry
      */
     private $doctrine;
 
@@ -40,12 +40,12 @@ final class MongoDBPagerProvider implements PagerProviderInterface
     private $registerListenersService;
 
     /**
-     * @param ManagerRegistry $doctrine
+     * @param Registry $doctrine
      * @param RegisterListenersService $registerListenersService
      * @param string $objectClass
      * @param array $baseOptions
      */
-    public function __construct(ManagerRegistry $doctrine, RegisterListenersService $registerListenersService, $objectClass, array $baseOptions)
+    public function __construct(Registry $doctrine, RegisterListenersService $registerListenersService, $objectClass, array $baseOptions)
     {
         $this->doctrine = $doctrine;
         $this->objectClass = $objectClass;
